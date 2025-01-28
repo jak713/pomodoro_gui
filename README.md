@@ -12,3 +12,7 @@ This is a simple **Pomodoro Timer App** that I created for personal use. It feat
 ## Technologies Used
 - **Python 3**
 - **PyQt6**
+
+
+### Want to do...
+- Add a way to track daily focus time for statistical purposes...
