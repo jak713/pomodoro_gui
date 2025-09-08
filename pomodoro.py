@@ -3,7 +3,7 @@
 import sys
 import os
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget, QHBoxLayout,QComboBox
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 
 class MainWindow(QMainWindow):
@@ -14,10 +14,7 @@ class MainWindow(QMainWindow):
 
     def initializeUI(self):
         self.setWindowTitle("Pomodoro")
-        self.setFixedSize(250,190)
         self.setStyleSheet("background-color: forestgreen")
-
-
 
         self.seconds = 1500
         self.counter = 0
@@ -29,24 +26,72 @@ class MainWindow(QMainWindow):
         self.setUpMainWindow()
 
     def setUpMainWindow(self):
-        
+        self.central_widget = QWidget()
+        self.main_layout = QVBoxLayout()
+        self.central_widget.setLayout(self.main_layout)
+        self.setCentralWidget(self.central_widget)
+
         self.time_label = QLabel(f"{str(self.seconds)}s", self)
         self.time_label.setFont(QFont("Arial",70))
         self.time_label.setStyleSheet("color: lightgreen; padding: 2px;")
-        self.time_label.resize(250,120)
-        self.time_label.move(12, 15)
+        self.time_label.setFixedSize(250,90)
+
+
 
         self.start_button = QPushButton("Start Timer", self)
-        self.start_button.resize(150,40)
-        self.start_button.move(50,130)
+        self.start_button.setFixedSize(150,40)
         self.start_button.setStyleSheet("color: lightgreen; background-color: darkgreen;")
         self.start_button.clicked.connect(self.start_timer)
 
         self.focus_time_label = QLabel(f"Focused for 0 minutes", self)
-        self.focus_time_label.resize(200,20)
-        self.focus_time_label.move(55,10)
+        self.focus_time_label.setFixedSize(200,20)
         self.focus_time_label.setStyleSheet("color: darkgreen")
+        self.focus_time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        hours = QComboBox(self)
+        hours.setStyleSheet("""border: 1px dashed black;
+    padding: 1px 10px 1px 3px;
+    min-width: 5em;
+    combobox-popup: 0;""")
+        for hour in range(7):
+            hours.addItem(str(hour) + " hours")
+
+        minutes = QComboBox(self)
+        minutes.setStyleSheet("""border: 1px dashed black;
+    padding: 1px 10px 1px 3px;
+    min-width: 6em;
+    combobox-popup: 0;
+    """)
+    
+        for minute in range(60):
+            minutes.addItem(str(minute) + " minutes")
+
+        self.set_time_button = QPushButton("Set time", self)
+        self.set_time_button.setFixedSize(60,30)
+        self.set_time_button.setStyleSheet("color: lightgreen;")
+        self.set_time_button.clicked.connect(lambda: self.set_timer(hours.currentText(), minutes.currentText()))
         
+        self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(self.focus_time_label, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(self.time_label, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.set_time_layout = QHBoxLayout()
+        self.set_time_layout.addWidget(hours)
+        self.set_time_layout.addWidget(minutes)
+        self.set_time_layout.addWidget(self.set_time_button)
+
+        self.main_layout.addLayout(self.set_time_layout)
+        
+    def set_timer(self, hours, minutes):
+        hours = hours.split()
+        minutes = minutes.split()
+        hours = int(hours[0])
+        minutes = int(minutes[0])
+        seconds = hours * 60**2 + minutes*60
+        self.seconds = seconds
+        self.time_label.setText(f"{str(self.seconds)}s")
+
     def start_timer(self):
         """Start 25:00 minute timer and turn the colour scheme to red."""
         self.start_button.setStyleSheet("color: lightpink; background-color:darkred;")
@@ -55,6 +100,8 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("background-color: #c3423f")
         self.time_label.setStyleSheet("color: pink; padding: 2px")
         self.focus_time_label.setStyleSheet("color: darkred")
+        self.set_time_button.setStyleSheet("color: pink; background-color:darkred")
+        self.set_time_button.setDisabled(True)
         self.timer.start()
         return
     
@@ -78,6 +125,8 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("background-color: forestgreen")
         self.time_label.setStyleSheet("color:  lightgreen; padding: 2px;")
         self.focus_time_label.setStyleSheet("color: darkgreen")
+        self.set_time_button.setStyleSheet("color: lightgreen;")
+        self.set_time_button.setDisabled(False)
         return
     
     def show_focus_time(self):
