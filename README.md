@@ -1,18 +1,15 @@
 # Pomodoro Timer App
 
 ## Overview
-This is a simple **Pomodoro Timer App** that I created for personal use. It features a 1500-second timer (25 minutes), a start button, and a reset button. The app also tracks how long the timer has been running, displaying the total time in minutes and hours.
+This is a simple **Pomodoro Timer App** that I created for personal use. It is a 1500-second timer (25 minutes), which tracks how long the timer has been running, displaying the total time in minutes and hours. The time can also be set by hours and minutes. 
 
-## Features
-- **1500-second Timer**: Set to 25 minutes.
-- **Start Button**: Begin the timer.
-- **Reset Button**: Reset the timer to start over.
-- **Time Tracking**: Shows total running time in minutes and hours.
+### Requirements
+- Python3
+- PyQt6
 
-## Technologies Used
-- **Python 3**
-- **PyQt6**
+Note: this can be packaged with PyInstaller to make it into a standalone app.
 
 
 ### Want to do...
-- Add a way to track daily focus time for statistical purposes...
+- Add a way to track daily focus time for statistical purposes
+- Add a way to track which projects a block of time is dedicated to
