@@ -93,9 +93,10 @@ class MainWindow(QMainWindow):
         self.time_label.setText(f"{str(self.seconds)}s")
 
     def start_timer(self):
-        """Start 25:00 minute timer and turn the colour scheme to red."""
+        """Start  timer and turn the colour scheme to red."""
         self.start_button.setStyleSheet("color: lightpink; background-color:darkred;")
         self.start_button.setText("Reset")
+        self.start_button.clicked.disconnect(self.start_timer)
         self.start_button.clicked.connect(self.reset)
         self.setStyleSheet("background-color: #c3423f")
         self.time_label.setStyleSheet("color: pink; padding: 2px")
@@ -122,6 +123,7 @@ class MainWindow(QMainWindow):
         self.start_button.setText("Start Timer")
         self.start_button.setStyleSheet("color: lightgreen; background-color: darkgreen;")
         self.start_button.clicked.connect(self.start_timer)
+        self.start_button.clicked.disconnect(self.reset)
         self.setStyleSheet("background-color: forestgreen")
         self.time_label.setStyleSheet("color:  lightgreen; padding: 2px;")
         self.focus_time_label.setStyleSheet("color: darkgreen")
